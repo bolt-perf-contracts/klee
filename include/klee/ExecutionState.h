@@ -351,6 +351,10 @@ public:
   // The numbers of times this state has run through Executor::stepInstruction
   std::uint64_t steppedInstructions;
 
+  /// @brief: a counter for how often the klee_call_count_me intrisinc has been
+  //called.
+  std::uint64_t call_count_me_counter;
+
   std::map<std::string,std::map<int,ref<Expr>>> reused_symbols;
 
 private:

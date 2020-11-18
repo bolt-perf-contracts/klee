@@ -167,6 +167,7 @@ static SpecialFunctionHandler::HandlerInfo handlerInfo[] = {
   add("klee_dump_constraints", handleDumpConstraints, false),
   add("klee_possibly_havoc", handlePossiblyHavoc, false),
   add("klee_map_symbol_names", handleMapSymbolNames, false),
+  add("klee_call_count_me", handleCallCountMe, false),
 
   // operator delete[](void*)
   add("_ZdaPv", handleDeleteArray, false),
@@ -998,6 +999,7 @@ void SpecialFunctionHandler::handleDivRemOverflow(ExecutionState &state,
 void SpecialFunctionHandler::handleTraceRet(ExecutionState &state,
                                             KInstruction *target,
                                             std::vector<ref<Expr> > &arguments) {
+  state.call_count_me_counter++;
   state.traceRet();
 }
 
@@ -1619,4 +1621,10 @@ void SpecialFunctionHandler::handleMapSymbolNames(ExecutionState &state,
   width = width * 8;//Convert to bits.
   ref<Expr> key_expr = state.readMemoryChunk(arguments[2], width, true);
   state.reused_symbols[symbol_name]={{occurence,key_expr}};
+}
+
+void SpecialFunctionHandler::handleCallCountMe(ExecutionState &state,
+                                                 KInstruction *target,
+                                                 std::vector<ref<Expr> > &arguments) {
+        state.call_count_me_counter++;
 }

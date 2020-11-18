@@ -83,13 +83,14 @@ ExecutionState::ExecutionState(KFunction *kf)
       forkDisabled(false),
       ptreeNode(0),
       steppedInstructions(0),
+      call_count_me_counter(0),
       relevantSymbols(), doTrace(true), condoneUndeclaredHavocs(false){
   pushFrame(0, kf);
 }
 
 ExecutionState::ExecutionState(const std::vector<ref<Expr> > &assumptions)
     : constraints(assumptions), executionStateForLoopInProcess(0),
-     ptreeNode(0), relevantSymbols(), doTrace(true),
+     ptreeNode(0), relevantSymbols(), doTrace(true), call_count_me_counter(0),
       condoneUndeclaredHavocs(false) {}
 
 ExecutionState::~ExecutionState() {
@@ -142,6 +143,7 @@ ExecutionState::ExecutionState(const ExecutionState &state)
       steppedInstructions(state.steppedInstructions),
       havocs(state.havocs), havocNames(state.havocNames),
       callPath(state.callPath),
+      call_count_me_counter(state.call_count_me_counter),
       relevantSymbols(state.relevantSymbols), doTrace(state.doTrace),
       condoneUndeclaredHavocs(state.condoneUndeclaredHavocs)
 {

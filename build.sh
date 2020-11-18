@@ -38,13 +38,17 @@ if [ $# -ne 0 ] && [ "$1" = "klee-only" ]; then
 fi
 
 # Instruction Tracer
-pushd trace-instructions
-    make clean && make
+pushd "$KLEE_DIR/trace-instructions"
+    make -j
 popd
 
 # Tree generation
-sudo apt-get install python3
-sudo apt-get install python3-pip
-sudo python3 -m pip install anytree
-sudo python3 -m pip install sympy
-sudo python3 -m pip install delegator
+if ! [ -f ".deps_installed" ];
+then
+	sudo apt-get install python3
+	sudo apt-get install python3-pip
+	sudo -H python3 -m pip install anytree
+	sudo -H python3 -m pip install sympy
+	sudo -H python3 -m pip install delegator
+	touch ".deps_installed"
+fi

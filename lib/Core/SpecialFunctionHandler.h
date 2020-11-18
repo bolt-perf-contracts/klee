@@ -173,6 +173,7 @@ public:
   HANDLER(handleDumpConstraints);
   HANDLER(handlePossiblyHavoc);
   HANDLER(handleMapSymbolNames);
+  HANDLER(handleCallCountMe);
 #undef HANDLER
 };
 } // namespace klee

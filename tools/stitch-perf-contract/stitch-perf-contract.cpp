@@ -110,6 +110,7 @@ call_path_t *load_call_path(std::string file_name,
       STATE_CALLS_MULTILINE,
       STATE_CONSTRAINTS,
       STATE_TAGS,
+      STATE_CALLCOUNT,
     } state = STATE_INIT;
 
     std::string array_dsid;
@@ -379,6 +380,10 @@ call_path_t *load_call_path(std::string file_name,
       } break;
 
       case STATE_TAGS: {
+        if (line == ";;-- Count Call Me calls --") {
+          state = STATE_CALLCOUNT;
+          continue;
+        }
         auto delim = line.find(" = ");
         assert(delim != std::string::npos && "Invalid Tag.");
         std::string name = line.substr(0, delim);
@@ -386,6 +391,9 @@ call_path_t *load_call_path(std::string file_name,
 
         call_path->tags[name] = value;
       } break;
+
+      case STATE_CALLCOUNT:
+      break;
 
       default: { assert(false && "Invalid call path file."); } break;
       }
