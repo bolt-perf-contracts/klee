@@ -981,6 +981,13 @@ void ExecutionState::loopEnter(const llvm::Loop *dstLoop) {
   LOG_LA("store the loop-head entering state,"
          " just in case.");
   executionStateForLoopInProcess = branch();
+
+  // Don't mess with the MergeHandler's refcounts with our copy.
+  for (unsigned int i = 0; i < this->openMergeStack.size(); i++) {
+    this->openMergeStack[i]->removeOpenState(executionStateForLoopInProcess);
+  }
+
+  executionStateForLoopInProcess->openMergeStack = {};
   executionStateForLoopInProcess->loopInProcess = 0;
 }
 
